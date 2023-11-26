@@ -1,0 +1,53 @@
+using System;
+
+class MyClass
+{
+    private int intValue;
+    private string stringValue;
+
+    // Default constructor
+    public MyClass()
+    {
+        Console.WriteLine("Default constructor called");
+        intValue = 0;
+        stringValue = "Default";
+    }
+
+    // Constructor with one parameter
+    public MyClass(int intValue)
+    {
+        Console.WriteLine("Constructor with int parameter called");
+        this.intValue = intValue;
+        stringValue = "Custom";
+    }
+
+    // Constructor with two parameters
+    public MyClass(int intValue, string stringValue)
+    {
+        Console.WriteLine("Constructor with int and string parameters called");
+        this.intValue = intValue;
+        this.stringValue = stringValue;
+    }
+
+    // Method to display values
+    public void DisplayValues()
+    {
+        Console.WriteLine($"IntValue: {intValue}, StringValue: {stringValue}");
+    }
+}
+
+class Program
+{
+    static void Main()
+    {
+        // Using different constructors
+        MyClass obj1 = new MyClass();  // Default constructor
+        obj1.DisplayValues();
+
+        MyClass obj2 = new MyClass(42);  // Constructor with int parameter
+        obj2.DisplayValues();
+
+        MyClass obj3 = new MyClass(99, "Hello");  // Constructor with int and string parameters
+        obj3.DisplayValues();
+    }
+}

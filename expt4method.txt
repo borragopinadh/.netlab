@@ -1,0 +1,27 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp5
+{
+    internal class Program
+    {
+        void display(int a)
+        {
+            Console.WriteLine(a);
+        }
+        void display(int a,int b)
+        {
+            Console.WriteLine("arguments:" +a +", " +b);
+        }
+        static void Main(string[] args)
+        {
+            Program p= new Program();
+            p.display(1);
+            p.display(2, 3);
+            Console.ReadLine();
+        }
+    }
+}
