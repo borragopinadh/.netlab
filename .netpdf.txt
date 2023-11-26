@@ -1,0 +1,513 @@
+Experiment: Developing an application for Data base connectivity using ADO.Net
+
+Index.html:
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <a href="login.aspx">LOGIN</a><br />
+    <a href="register.aspx">REGISTER</a>
+</body>
+</html>
+Register.aspx:
+
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="register.aspx.cs" Inherits="ADODemo.register" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+    <style type="text/css">
+        .auto-style1 {
+            height: 26px;
+        }
+    </style>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <table border="1" style="width:100%;" title="LOGIN">
+            <tr>
+                <td class="auto-style1" colspan="1" rowspan="1">User Name</td>
+                <td class="auto-style1" colspan="1" rowspan="1">
+                    <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1" colspan="1">Password</td>
+                <td class="auto-style1" colspan="1">
+                    <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1" colspan="1">ConfirmPassword</td>
+                <td class="auto-style1" colspan="1">
+                    <asp:TextBox ID="TextBox3" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1" colspan="1">Email</td>
+                <td class="auto-style1" colspan="1">
+                    <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1" colspan="1">MobileNo</td>
+                <td class="auto-style1" colspan="1">
+                    <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
+                </td>
+            </tr>
+            <tr>
+                <td class="auto-style1" colspan="1">
+                    <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Register" />
+                </td>
+                <td class="auto-style1" colspan="1">
+                    <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Reset" />
+                </td>
+            </tr>
+        </table>
+        <div>
+        </div>
+    </form>
+</body>
+</html>
+
+Register.aspx.cs:
+using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+namespace ADODemo
+{
+    public partial class register : System.Web.UI.Page
+    {
+        SqlConnection con=new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lsrk\\source\\repos\\ADODemo\\App_Data\\Database1.mdf;Integrated Security=True");
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            TextBox1.Focus();
+            con.Open(); 
+        }
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            
+            string query = "insert into [dbo]. [register] values (' "+TextBox1.Text+"  ',' "+TextBox2.Text+" ',' "+TextBox4.Text+" ',' "+TextBox5.Text+" ') ";
+            SqlCommand cmd = new SqlCommand(query,con);
+            cmd.CommandText = query;
+            int i=cmd.ExecuteNonQuery();
+            if(i>0)
+            {
+                Response.Redirect("Login.aspx");
+            }
+            else
+            {
+                Response.Write("Some Details gone wrong please verify them again");
+            }
+        }
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+           TextBox1.Text = string.Empty; TextBox2.Text=string.Empty;
+	TextBox3.Text = string.Empty; TextBox4.Text=string.Empty;
+        }
+    }
+}
+
+Login.aspx:
+<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="login.aspx.cs" Inherits="ADODemo.login" %>
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head runat="server">
+    <title></title>
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table border="1" style="width:100%;" title="LOGIN">
+    <tr>
+        <td class="auto-style1" colspan="1" rowspan="1">User Name</td>
+        <td class="auto-style1" colspan="1" rowspan="1">
+            <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
+        </td>
+    </tr>
+    <tr>
+        <td class="auto-style1" colspan="1">Password</td>
+        <td class="auto-style1" colspan="1">
+            <asp:TextBox ID="TextBox2" runat="server"></asp:TextBox>
+        </td>
+    </tr>
+    
+    <tr>
+        <td class="auto-style1" colspan="1">
+            <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="Login" />
+        </td>
+        <td class="auto-style1" colspan="1">
+            <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="Reset" />
+        </td>
+    </tr>
+</table>
+        
+        </div>
+    </form>
+</body>
+</html>
+
+Login.aspx.cs
+using System;
+using System.Collections.Generic;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+using System.Data;
+using System.Data.SqlClient;
+using System.Runtime.Remoting.Messaging;
+
+namespace ADODemo
+{
+    public partial class login : System.Web.UI.Page
+    {
+        SqlConnection con = new SqlConnection("Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename=C:\\Users\\lsrk\\source\\repos\\ADODemo\\App_Data\\Database1.mdf;Integrated Security=True");
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+        }
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+            con.Open();
+            string query = "select * from [dbo].[register] where uname='"+TextBox1.Text+"' and pwd='"+ TextBox2.Text+"'";
+            SqlCommand cmd = new SqlCommand(query, con);
+            
+            SqlDataReader reader = cmd.ExecuteReader();
+
+            if (reader.HasRows)
+            {
+                Response.Redirect("home.aspx");
+            }
+            else
+            {
+                Response.Write("Invalid Credentials");
+                TextBox1.Text = string.Empty; TextBox2.Text = string.Empty;
+            }   
+              
+        }
+        protected void Button2_Click(object sender, EventArgs e)
+        {
+            TextBox1.Text = string.Empty; TextBox2.Text=string.Empty;
+        }
+
+    }
+}
+
+Home.aspx.cs:
+using System;
+using System.Collections.Generic;
+
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace ADODemo
+{
+    public partial class home: System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+            
+            Response.Write("Welcome");
+        }
+    }
+}
+
+Exp:Write a program for session management using cookies and session
+Cookies:
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication6
+{
+    public partial class Login : System.Web.UI.Page
+    {
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+
+                HttpCookie c = new HttpCookie("MyCookie");
+                c.Value = TextBox1.Text;
+                c.Expires = DateTime.Now.AddSeconds(30);
+                Response.Cookies.Add(c);
+                Response.Redirect(“home.aspx”) ; 
+            	
+            }
+            else
+            {
+                Server.Transfer("Failure.aspx");
+            }
+
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication6
+{
+    public partial class home: System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+            string str1 = Request.Cookies["MyCookie"].Value;
+            Response.Write(str1);
+           
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication6
+{
+    public partial class Login : System.Web.UI.Page
+    {
+        protected void Button1_Click(object sender, EventArgs e)
+        {
+
+                
+            	Session["data"] = TextBox1.Text;
+Response.Redirect("Sucess.aspx");
+            }
+            else
+            {
+                Server.Transfer("Failure.aspx");
+            }
+
+        }
+    }
+}
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.UI;
+using System.Web.UI.WebControls;
+
+namespace WebApplication6
+{
+    public partial class home: System.Web.UI.Page
+    {
+        protected void Page_Load(object sender, EventArgs e)
+        {
+
+          string str1 = Session["data"].ToString();
+            Response.Write(str1);
+           
+        }
+    }
+}
+Web.config:
+<configuration>
+  <system.web>
+    <compilation debug="true" targetFramework="4.7.2" />
+    <httpRuntime targetFramework="4.7.2" />
+  <sessionState cookieless="true" mode="InProc"></sessionState>
+  </system.web>
+
+Exp: Develop an Application using LINQ
+LINQ:
+using System;
+using System.Collections.Generic;
+using System.Diagnostics.Tracing;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ConsoleApp4
+{
+    internal class Program
+    {
+        static void Main(string[] args)
+        {
+            int[] num = { 12, 34, 56, 78, 95 };
+            var evennum = from number in num where (number % 2 == 0 ) select number;
+            foreach(var num1 in evennum) { Console.WriteLine(num1+"Even"); }
+
+
+            int[] scores = { 97, 92, 81, 60 };
+
+            // Define the query expression.
+            IEnumerable<int> scoreQuery =
+                from score in scores
+                where score > 80 orderby score
+                select score;
+
+            // Execute the query.
+            foreach (int i in scoreQuery)
+            {
+                Console.Write(i + " ");
+            }
+
+
+            string[] str = { "the", "quick", "brown", "fox", "jumps" };
+
+            IEnumerable<String> query = from word in str where word.Length==3 orderby word.Length, word.Substring(0, 1) select word;
+             
+            foreach(string word in query)
+            {
+                Console.WriteLine(word);
+            }
+            Console.ReadLine();
+            
+            
+            List<string> list = new List<string>() { "an", "apple", "at", "day" };
+            var query1 = from word in list select word.Substring(0,2);
+            foreach(string s in query1)
+            {
+                Console.WriteLine(s);
+
+            }
+           
+}}}            
+
+Exp: Implement a C# program for constructor Overloading
+Constructor overload
+using System;
+namespace practice_pgm
+{
+    class Constructor_Demo
+    {
+        int a, b;
+        public Constructor_Demo()   //default contructor
+        {
+            a = 0;
+            b = 0;
+        }
+        public Constructor_Demo(int a,int b)
+        {
+            this.a = a;
+            this.b = b;
+
+        }
+        public Constructor_Demo(Constructor_Demo x)
+        {
+            this.a = x.a;
+            this.b = x.b;
+        }
+        private Constructor_Demo(int a)
+        {
+            this.a = a;
+            Console.WriteLine("It is used when there are only sttaic variables in class");
+        }
+        static Constructor_Demo()
+        {
+            Console.WriteLine("static constructor");
+            Console.WriteLine("No constructor calling is required");
+            Console.WriteLine("A static constructor does not take access modifiers or have parameters.");
+           Console.WriteLine("Automatically called before the first instance  of a class is created ");
+
+        }
+        public static void Main()
+        {
+            Constructor_Demo obj = new Constructor_Demo(); //an object is created , constructor is called
+            Constructor_Demo obj1 = new Constructor_Demo(5,6);
+            Constructor_Demo obj2 = new Constructor_Demo(obj1);
+            Constructor_Demo obj3 = new Constructor_Demo(8);
+            
+            Console.WriteLine(obj3.a);
+            Console.WriteLine(obj3.b);
+            Console.Read();
+        }
+
+    }
+}
+Exp: Implement a C# program for Polymorphism
+Method overloading:
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace practice_pgm
+{
+    internal class Program
+    {
+        public void greeting()
+        {
+            Console.WriteLine("Hello");
+        }
+
+        // method takes one string parameter
+        public void greeting(string name)
+        {
+            Console.WriteLine("Hello " + name);
+        }
+
+        static void Main(string[] args)
+        {
+            Program p = new Program();
+
+            // calls method without any argument
+            p.greeting();
+
+            //calls method with an argument
+            p.greeting("VVIT");
+
+        }
+    }
+}
+
+Method Overriding:
+
+using System;
+
+namespace practice_pgm  
+{
+    class Base_class
+    { 
+        internal virtual  void show()
+        {
+            Console.WriteLine("Super class Method");
+        }
+    }
+
+    class Derived_class: Base_class
+    {
+        
+       internal override void show() {
+
+            Console.WriteLine("Sub class Method");
+        }
+    }
+    class Method_Override
+    {
+
+        static void Main(string[] args)
+        {
+            
+            Derived_class e = new Derived_class();
+            e.show();
+        }
+    }
+   
+}
+
+
